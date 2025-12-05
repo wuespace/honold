@@ -1,7 +1,16 @@
 import type { JSONValue } from "@hono/hono/utils/types";
 
+/**
+ * Represents a flash value that can be stored and retrieved.
+ */
 export interface FlashValue {
+  /**
+   * The key path associated with the flash value.
+   */
   readonly key: string[];
+  /**
+   * The JSON value associated with the key path.
+   */
   readonly value: JSONValue;
 }
 
@@ -24,7 +33,13 @@ export function isFlashValue(value: unknown): value is FlashValue {
   return "value" in flashValue;
 }
 
+/**
+ * Represents the flash storage cookie value.
+ */
 export interface Flash {
+  /**
+   * An array of flash values stored in the flash object.
+   */
   readonly values: FlashValue[];
   /**
    * Indicates whether there are any valid flash messages.
