@@ -23,7 +23,9 @@ const app = new Hono()
   .get("/", (c) => {
     return c.render(
       <form action="/submit" method="post">
-        {getFlash("error")?.map((msg) => <div style="color: red;" key={msg}>{msg}</div>)}
+        {getFlash("error")?.map((msg) => (
+          <div style="color: red;" key={msg}>{msg}</div>
+        ))}
         {getFlash("success")?.map((msg) => (
           <div style="color: green;" key={msg}>{msg}</div>
         ))}

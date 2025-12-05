@@ -40,28 +40,32 @@ const FLASH_RUNTIME_STORE = new AsyncLocalStorage<FlashStore>();
  * @example
  * app.use(honold({ cookieName: 'myFlash', autoReflash: false }));
  */
-export const honold: (honoldOptions?: HonoldOptions) => ReturnType<typeof createMiddleware<{
-  Variables: {
-    readonly flash: FlashStore;
-  }
-}>> = ({
+export const honold: (
+  honoldOptions?: HonoldOptions,
+) => ReturnType<
+  typeof createMiddleware<{
+    Variables: {
+      readonly flash: FlashStore;
+    };
+  }>
+> = ({
   autoReflash = true,
   cookieName = "flash",
 } = {}) =>
-    createMiddleware(async (c, next) => {
-      const store = new FlashStore(c, cookieName);
-      c.set("flash", store);
+  createMiddleware(async (c, next) => {
+    const store = new FlashStore(c, cookieName);
+    c.set("flash", store);
 
-      await FLASH_RUNTIME_STORE.run(store, next);
+    await FLASH_RUNTIME_STORE.run(store, next);
 
-      if (
-        autoReflash && c.res.status >= 300 && c.res.status < 400 &&
-        c.req.method.toUpperCase() === "GET"
-      ) {
-        store.reflash();
-      }
-      store.commit();
-    });
+    if (
+      autoReflash && c.res.status >= 300 && c.res.status < 400 &&
+      c.req.method.toUpperCase() === "GET"
+    ) {
+      store.reflash();
+    }
+    store.commit();
+  });
 
 /**
  * Retrieves the current `FlashStore` instance from the runtime store.
